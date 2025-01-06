@@ -1,5 +1,4 @@
 import Dashboard from "@/components/dashboard/dashboard";
-import Image from "next/image";
 
 /* <Image
           className="dark:invert"
@@ -10,7 +9,9 @@ import Image from "next/image";
           priority
         /> */
 export default function Home() {
-  return <div>
-    <Dashboard  />
-  </div>;
+  return (
+    <div>
+      <Dashboard />
+    </div>
+  );
 }

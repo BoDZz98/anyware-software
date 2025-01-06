@@ -1,22 +1,38 @@
-import {
-  Avatar,
-  Button,
-  Divider,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  Stack,
-} from "@mui/material";
-import React from "react";
+"use client";
+import { Button, List, Stack } from "@mui/material";
+import React, { useEffect } from "react";
 import QuizCard from "./quiz-card";
+import { announcementObj, quizObj } from "@/types/types";
+import AnnouncementsCard from "./announcements-card";
+import Link from "next/link";
+import { getData } from "@/util/api-services";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store";
+import { dataAction } from "@/store/data-slice";
 
 /* <Box> */
 const text =
   "Here we are, are you ready to fight? Dont worry, we prepared some tips to be ready for your exams.";
 const text2 = "Nothing happens until somthing moves - Albert Einstein";
 const anyText = "Any text any text any text";
+
 const Dashboard = () => {
+  const dispatch = useDispatch();
+
+  const { quizzes, announcments } = useSelector(
+    (state: RootState) => state.data
+  );
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { quizzes, announcements } = await getData();
+
+      dispatch(dataAction.setAnnouncments(announcements));
+      dispatch(dataAction.setQuizzes(quizzes));
+      // setQuizzes(quizzes);
+    };
+    fetchData();
+  }, [dispatch]);
   return (
     <Stack spacing={3} className="p-5">
       <Stack spacing={2} className="p-8 rounded-lg bg-white shadow-md">
@@ -36,56 +52,22 @@ const Dashboard = () => {
           {/* Top --------------------------------------------------------------- */}
           <Stack direction="row" className="justify-between font-bold text-lg">
             <h1 className="text-gray-500">Announcements</h1>
-            <h1 className="text-cyan-500">All</h1>
+            <Link href="/announcments" className="text-cyan-500">
+              All
+            </Link>
           </Stack>
           <p className="text-gray-300 text-sm">{anyText}</p>
           {/* Announcments Content --------------------------------------------------------------- */}
           <List>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Photos"
-                secondary="Jan 9, 2014"
-                className=" w-1/3"
-                slotProps={{
-                  primary: { className: "text-gray-900" },
-                  secondary: { className: "text-gray-400" },
-                }}
-              />
-              <p className="text-gray-400 pl-3 border-l-4"> {text}</p>
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Photos"
-                secondary="Jan 9, 2014"
-                className=" w-1/3"
-                slotProps={{
-                  primary: { className: "text-gray-900" },
-                  secondary: { className: "text-gray-400" },
-                }}
-              />
-              <p className="text-gray-400 pl-3 border-l-4"> {text}</p>
-            </ListItem>
-            <ListItem>
-              <ListItemAvatar>
-                <Avatar />
-              </ListItemAvatar>
-              <ListItemText
-                primary="Photos"
-                secondary="Jan 9, 2014"
-                className=" w-1/3"
-                slotProps={{
-                  primary: { className: "text-gray-900" },
-                  secondary: { className: "text-gray-400" },
-                }}
-              />
-              <p className="text-gray-400 pl-3 border-l-4"> {text}</p>
-            </ListItem>
+            {announcments &&
+              announcments
+                .map((announcment: announcementObj) => (
+                  <AnnouncementsCard
+                    key={announcment._id}
+                    announcment={announcment}
+                  />
+                ))
+                .splice(0, 3)}
           </List>
         </Stack>
         {/* Quiz */}
@@ -93,14 +75,20 @@ const Dashboard = () => {
           {/* Top ---------------------------- */}
           <Stack direction="row" className="justify-between font-bold text-lg">
             <h1 className=" text-gray-500">{"What's due"}</h1>
-            <h1 className="text-cyan-500 ">All</h1>
+            <Link href="/quiz" className="text-cyan-500 ">
+              All
+            </Link>
           </Stack>
           <p className="text-gray-300 text-sm">{anyText}</p>
           {/* Quiz Content */}
-          <QuizCard />
+          {quizzes &&
+            quizzes
+              .map((quiz: quizObj) => <QuizCard key={quiz._id} quiz={quiz} />)
+              .slice(0, 2)}
+          {/* <QuizCard />
           <Divider />
 
-          <QuizCard />
+          <QuizCard /> */}
         </Stack>
       </Stack>
     </Stack>

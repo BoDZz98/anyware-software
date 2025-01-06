@@ -1,3 +1,4 @@
+import { quizObj } from "@/types/types";
 import { HourglassEmpty } from "@mui/icons-material";
 import {
   Button,
@@ -8,7 +9,9 @@ import {
 } from "@mui/material";
 import React from "react";
 
-const QuizCard = () => {
+type QuizCardProps = { quiz: quizObj };
+
+const QuizCard = ({ quiz }: QuizCardProps) => {
   return (
     <Card sx={{ maxWidth: 345 }} className="shadow-none">
       {/* <CardHeader
@@ -27,15 +30,15 @@ const QuizCard = () => {
           sx={{ color: "#6b7280 ", fontSize: "1.5rem" }}
         >
           <HourglassEmpty className="text-cyan-500" />
-          Unit 2 Quiz
+          {quiz.title}
         </Typography>
         <Typography
           variant="body1"
           sx={{ color: "#9ca3af ", fontSize: "1.2rem" }}
         >
-          Course: Math <br />
-          Topic: Algebra <br />
-          Due to: 12/12/2022
+          Course: {quiz.course} <br />
+          Topic: {quiz.topic} <br />
+          Due to: {quiz.dueDate}
         </Typography>
         <Button
           variant="outlined"

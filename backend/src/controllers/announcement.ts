@@ -4,12 +4,13 @@ import Announcement, { announcementObj } from "../models/announcementModel";
 
 export const createAnnouncement = async (req: Request, res: Response) => {
   const newAnnouncement = req.body as announcementObj;
-  console.log(newAnnouncement);
+  // console.log(newAnnouncement);
   try {
     const createdAnnouncement = await Announcement.create(newAnnouncement);
+    const announcements = await Announcement.find();
     return res
       .status(201)
-      .json({ message: "Announcement created", createdAnnouncement });
+      .json({ message: "Announcement created", announcements });
   } catch (error) {
     console.log("error in Announcement controller, createAnnouncement");
     return res.status(500).json({ message: "Error creating Announcement" });
@@ -28,15 +29,18 @@ export const getAnnouncements = async (req: Request, res: Response) => {
 };
 
 export const updateAnnouncement = async (req: Request, res: Response) => {
-  const { announcementId, newAnnouncement } = (await req.body) as {
+  const { announcementId, newAnnouncement } = req.body as {
     announcementId: string;
     newAnnouncement: announcementObj;
   };
 
   try {
     await Announcement.findByIdAndUpdate(announcementId, newAnnouncement);
+    const announcements = await Announcement.find();
 
-    return res.status(201).json({ message: "Announcement updated" });
+    return res
+      .status(201)
+      .json({ message: "Announcement updated", announcements });
   } catch (error) {
     console.log("error in Announcement controller, updateAnnouncement");
     return res.status(500).json({ message: "Error updating Announcement" });
@@ -44,12 +48,15 @@ export const updateAnnouncement = async (req: Request, res: Response) => {
 };
 
 export const deleteAnnouncement = async (req: Request, res: Response) => {
-  const announcementId = (await req.body) as string;
+  const { announcementId } = req.body as { announcementId: string };
+  // console.log(announcementId);
 
   try {
     await Announcement.findByIdAndDelete(announcementId);
-
-    return res.status(201).json({ message: "Announcement deleted" });
+    const announcements = await Announcement.find();
+    return res
+      .status(201)
+      .json({ message: "Announcement deleted", announcements });
   } catch (error) {
     console.log("error in Announcement controller, deleteAnnouncement");
     return res.status(500).json({ message: "Error deleting Announcement" });

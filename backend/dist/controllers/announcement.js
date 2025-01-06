@@ -16,12 +16,13 @@ exports.deleteAnnouncement = exports.updateAnnouncement = exports.getAnnouncemen
 const announcementModel_1 = __importDefault(require("../models/announcementModel"));
 const createAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newAnnouncement = req.body;
-    console.log(newAnnouncement);
+    // console.log(newAnnouncement);
     try {
         const createdAnnouncement = yield announcementModel_1.default.create(newAnnouncement);
+        const announcements = yield announcementModel_1.default.find();
         return res
             .status(201)
-            .json({ message: "Announcement created", createdAnnouncement });
+            .json({ message: "Announcement created", announcements });
     }
     catch (error) {
         console.log("error in Announcement controller, createAnnouncement");
@@ -42,10 +43,13 @@ const getAnnouncements = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.getAnnouncements = getAnnouncements;
 const updateAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { announcementId, newAnnouncement } = (yield req.body);
+    const { announcementId, newAnnouncement } = req.body;
     try {
         yield announcementModel_1.default.findByIdAndUpdate(announcementId, newAnnouncement);
-        return res.status(201).json({ message: "Announcement updated" });
+        const announcements = yield announcementModel_1.default.find();
+        return res
+            .status(201)
+            .json({ message: "Announcement updated", announcements });
     }
     catch (error) {
         console.log("error in Announcement controller, updateAnnouncement");
@@ -54,10 +58,14 @@ const updateAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, funct
 });
 exports.updateAnnouncement = updateAnnouncement;
 const deleteAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const announcementId = (yield req.body);
+    const { announcementId } = req.body;
+    console.log(announcementId);
     try {
         yield announcementModel_1.default.findByIdAndDelete(announcementId);
-        return res.status(201).json({ message: "Announcement deleted" });
+        const announcements = yield announcementModel_1.default.find();
+        return res
+            .status(201)
+            .json({ message: "Announcement deleted", announcements });
     }
     catch (error) {
         console.log("error in Announcement controller, deleteAnnouncement");

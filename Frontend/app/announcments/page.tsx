@@ -1,11 +1,12 @@
 "use client";
 import AnnouncementsCard from "@/components/dashboard/announcements-card";
 import AnnouncementDialog from "@/components/dialogs/announcement-dialog";
+import requireAuth from "@/components/requireAuth";
 import { RootState } from "@/store";
 import { dataAction } from "@/store/data-slice";
 import { announcementObj } from "@/types/types";
 import { deleteAnnouncement } from "@/util/api-services";
-import { AddCircleOutline, Delete, Edit } from "@mui/icons-material";
+import { AddBox, Delete, Edit } from "@mui/icons-material";
 import { Button, IconButton, Stack } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,15 +19,26 @@ const AnnouncementsPage = () => {
 
   const [createDialog, setCreateDialog] = useState(false);
   const [updateDialog, setUpdateDialog] = useState(false);
+  const [selectedAnnouncement, setSelectedAnnouncement] =
+    useState<announcementObj | null>(null);
 
-  const handleClickOpen = (identifier: string) => {
+  const handleClickOpen = (
+    identifier: string,
+    announcement?: announcementObj
+  ) => {
     if (identifier === "create") setCreateDialog(true);
-    else setUpdateDialog(true);
+    else {
+      setSelectedAnnouncement(announcement!);
+      setUpdateDialog(true);
+    }
   };
 
   const handleClose = (identifier: string) => {
     if (identifier === "create") setCreateDialog(false);
-    else setUpdateDialog(false);
+    else {
+      setSelectedAnnouncement(null);
+      setUpdateDialog(false);
+    }
   };
 
   const deleteHandler = async (announcementId: string) => {
@@ -45,9 +57,10 @@ const AnnouncementsPage = () => {
         <IconButton
           aria-label="add"
           className="text-cyan-500"
-          onClick={handleClickOpen.bind(null, "create")}
+          size="large"
+          onClick={() => handleClickOpen("create")}
         >
-          <AddCircleOutline />
+          <AddBox fontSize="large"/>
         </IconButton>
       </Stack>
       {/* Announcments Content --------------------------------------------------------------- */}
@@ -79,19 +92,22 @@ const AnnouncementsPage = () => {
                 variant="outlined"
                 className="text-cyan-500"
                 startIcon={<Edit />}
-                onClick={handleClickOpen.bind(null, "update")}
+                onClick={() => handleClickOpen("update", announcment)}
               >
                 Edit
               </Button>
               {/* Update Dialog */}
-              <AnnouncementDialog
-                open={updateDialog}
-                oldValue={announcment}
-                handleClose={handleClose.bind(null, "update")}
-              />
+              {selectedAnnouncement && (
+                <AnnouncementDialog
+                  open={updateDialog}
+                  oldValue={selectedAnnouncement}
+                  handleClose={handleClose.bind(null, "update")}
+                />
+              )}
             </Stack>
           </Stack>
         ))}
+
       {/* Dialog---------------------------------------------------- */}
       <AnnouncementDialog
         open={createDialog}
@@ -101,4 +117,4 @@ const AnnouncementsPage = () => {
   );
 };
 
-export default AnnouncementsPage;
+export default requireAuth(AnnouncementsPage);

@@ -43,9 +43,9 @@ const getAnnouncements = (req, res) => __awaiter(void 0, void 0, void 0, functio
 });
 exports.getAnnouncements = getAnnouncements;
 const updateAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { announcementId, newAnnouncement } = req.body;
+    const newAnnouncement = req.body;
     try {
-        yield announcementModel_1.default.findByIdAndUpdate(announcementId, newAnnouncement);
+        yield announcementModel_1.default.findByIdAndUpdate(newAnnouncement._id, newAnnouncement);
         const announcements = yield announcementModel_1.default.find();
         return res
             .status(201)
@@ -59,7 +59,7 @@ const updateAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, funct
 exports.updateAnnouncement = updateAnnouncement;
 const deleteAnnouncement = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { announcementId } = req.body;
-    console.log(announcementId);
+    // console.log(announcementId);
     try {
         yield announcementModel_1.default.findByIdAndDelete(announcementId);
         const announcements = yield announcementModel_1.default.find();

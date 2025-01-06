@@ -1,5 +1,5 @@
 export type quizObj = {
-  _id: string;
+  _id?: string;
   title: string;
   course: string;
   topic: string;

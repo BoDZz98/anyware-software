@@ -1,14 +1,15 @@
 "use client";
 import { Button, List, Stack } from "@mui/material";
 import React, { useEffect } from "react";
-import QuizCard from "./quiz-card";
 import { announcementObj, quizObj } from "@/types/types";
-import AnnouncementsCard from "./announcements-card";
 import Link from "next/link";
 import { getData } from "@/util/api-services";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { dataAction } from "@/store/data-slice";
+import requireAuth from "@/components/requireAuth";
+import AnnouncementsCard from "@/components/dashboard/announcements-card";
+import QuizCard from "@/components/dashboard/quiz-card";
 
 /* <Box> */
 const text =
@@ -95,4 +96,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default requireAuth(Dashboard);

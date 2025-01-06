@@ -1,29 +1,28 @@
+import { dataAction } from "@/store/data-slice";
 import { quizObj } from "@/types/types";
-import { HourglassEmpty } from "@mui/icons-material";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-} from "@mui/material";
-import React from "react";
+import { deleteQuiz } from "@/util/api-services";
+import { Delete, Edit, HourglassEmpty } from "@mui/icons-material";
+import { Button, Card, CardContent, Stack, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import QuizDialog from "../dialogs/quiz-dialog";
 
-type QuizCardProps = { quiz: quizObj };
+type QuizCardProps = { quiz: quizObj; updatable?: boolean };
 
-const QuizCard = ({ quiz }: QuizCardProps) => {
+const QuizCard = ({ quiz, updatable }: QuizCardProps) => {
+  const dispatch = useDispatch();
+  const [updateDialog, setUpdateDialog] = useState(false);
+
+  const handleClickOpen = () => setUpdateDialog(true);
+  const handleClose = () => setUpdateDialog(false);
+
+  const deleteHandler = async (quizId: string) => {
+    const allQuizzes = await deleteQuiz(quizId);
+    dispatch(dataAction.setQuizzes(allQuizzes));
+  };
+
   return (
     <Card sx={{ maxWidth: 345 }} className="shadow-none">
-      {/* <CardHeader
-        avatar={<HourglassEmpty className="text-cyan-500" />}
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
-        title="Unit 2 Quiz"
-      /> */}
-
       <CardContent>
         <Typography
           variant="subtitle1"
@@ -46,6 +45,32 @@ const QuizCard = ({ quiz }: QuizCardProps) => {
         >
           Start Quiz
         </Button>
+        {updatable && (
+          <Stack direction="row" className="mt-2 justify-between gap-x-2">
+            <Button
+              variant="text"
+              color="error"
+              className="w-full"
+              startIcon={<Delete />}
+              onClick={() => deleteHandler(quiz._id!)}
+            >
+              Delete
+            </Button>
+            <Button
+              variant="text"
+              className="text-cyan-500 w-full"
+              startIcon={<Edit />}
+              onClick={() => handleClickOpen()}
+            >
+              Edit
+            </Button>
+            <QuizDialog
+              open={updateDialog}
+              oldValue={quiz}
+              handleClose={handleClose.bind(null)}
+            />
+          </Stack>
+        )}
       </CardContent>
     </Card>
   );

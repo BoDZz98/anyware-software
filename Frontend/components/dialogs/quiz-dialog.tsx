@@ -1,6 +1,6 @@
 import { dataAction } from "@/store/data-slice";
-import { announcementObj } from "@/types/types";
-import { createAnnouncement, updateAnnouncement } from "@/util/api-services";
+import { quizObj } from "@/types/types";
+import { createQuiz, updateQuiz } from "@/util/api-services";
 import {
   Button,
   Dialog,
@@ -8,25 +8,26 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
-import { FloatingLabel, Textarea } from "flowbite-react";
+import { FloatingLabel } from "flowbite-react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-type AnnouncementDialogProps = {
+type QuizDialogProps = {
   open: boolean;
   handleClose: () => void;
-  oldValue?: announcementObj;
+  oldValue?: quizObj;
 };
-const AnnouncementDialog = (props: AnnouncementDialogProps) => {
+const QuizDialog = (props: QuizDialogProps) => {
   const { open, handleClose, oldValue } = props;
   const dispatch = useDispatch();
 
-  const title = oldValue ? "Update Announcement" : "Create Announcement";
+  const title = oldValue ? "Update Quiz" : "Create Quiz";
 
   const [inputs, setInputs] = useState({
     title: oldValue ? oldValue.title : "",
-    subTitle: oldValue ? oldValue.subTitle : "",
+    course: oldValue ? oldValue.course : "",
     topic: oldValue ? oldValue.topic : "",
+    dueDate: oldValue ? oldValue.dueDate : "",
   });
 
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -34,24 +35,22 @@ const AnnouncementDialog = (props: AnnouncementDialogProps) => {
     const formData = new FormData(event.currentTarget);
     const formJson = Object.fromEntries(
       formData.entries()
-    ) as unknown as announcementObj;
-    const newAnnouncement = {
+    ) as unknown as quizObj;
+    const newQuiz = {
       title: formJson.title,
-      subTitle: formJson.subTitle,
+      course: formJson.course,
       topic: formJson.topic,
+      dueDate: formJson.dueDate,
     };
 
-    let allAnnouncements;
+    let allQuizzes;
     // If we are updating call the update function
     if (oldValue) {
-      allAnnouncements = await updateAnnouncement(
-        oldValue._id!,
-        newAnnouncement
-      );
+      allQuizzes = await updateQuiz(oldValue._id!, newQuiz);
     } else {
-      allAnnouncements = await createAnnouncement(newAnnouncement);
+      allQuizzes = await createQuiz(newQuiz);
     }
-    dispatch(dataAction.setAnnouncments(allAnnouncements));
+    dispatch(dataAction.setQuizzes(allQuizzes));
     handleClose();
   };
 
@@ -79,22 +78,31 @@ const AnnouncementDialog = (props: AnnouncementDialogProps) => {
         />
         <FloatingLabel
           required
-          id="subTitle"
-          name="subTitle"
+          id="course"
+          name="course"
           type="text"
           variant="outlined"
-          label="Subtitle"
-          value={inputs.subTitle}
-          onChange={(e) => setInputs({ ...inputs, subTitle: e.target.value })}
+          label="Course"
+          value={inputs.course}
+          onChange={(e) => setInputs({ ...inputs, course: e.target.value })}
         />
-        <Textarea
+        <FloatingLabel
           required
           id="topic"
           name="topic"
-          placeholder="Let's talk about..."
-          rows={4}
+          variant="outlined"
+          label="topic"
           value={inputs.topic}
           onChange={(e) => setInputs({ ...inputs, topic: e.target.value })}
+        />
+        <FloatingLabel
+          required
+          id="dueDate"
+          name="dueDate"
+          variant="outlined"
+          label="Due Date"
+          value={inputs.dueDate}
+          onChange={(e) => setInputs({ ...inputs, dueDate: e.target.value })}
         />
       </DialogContent>
       <DialogActions>
@@ -114,4 +122,4 @@ const AnnouncementDialog = (props: AnnouncementDialogProps) => {
   );
 };
 
-export default AnnouncementDialog;
+export default QuizDialog;

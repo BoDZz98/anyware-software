@@ -29,13 +29,11 @@ export const getAnnouncements = async (req: Request, res: Response) => {
 };
 
 export const updateAnnouncement = async (req: Request, res: Response) => {
-  const { announcementId, newAnnouncement } = req.body as {
-    announcementId: string;
-    newAnnouncement: announcementObj;
-  };
+  const newAnnouncement = req.body as announcementObj;
 
   try {
-    await Announcement.findByIdAndUpdate(announcementId, newAnnouncement);
+    await Announcement.findByIdAndUpdate(newAnnouncement._id, newAnnouncement);
+
     const announcements = await Announcement.find();
 
     return res

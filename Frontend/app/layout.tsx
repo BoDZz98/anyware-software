@@ -25,7 +25,10 @@ export default function RootLayout({
           <Stack direction="row">
             {/* Side bar -------------------------------------------------------------------------- */}
             <List className="bg-gradient-to-t from-cyan-500 via-cyan-700 to-customBlue fixed left-0 top-0 h-screen">
-              <h1 className="text-3xl font-bold place-self-center mb-12 " key={1}>
+              <h1
+                className="text-3xl font-bold place-self-center mb-12 "
+                key={1}
+              >
                 Coligo
               </h1>
               {NAVDATA.map((item) => (

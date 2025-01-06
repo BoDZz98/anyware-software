@@ -1,4 +1,4 @@
-import { announcementObj } from "@/types/types";
+import { announcementObj, quizObj } from "@/types/types";
 
 const headers = {
   "Content-Type": "application/json",
@@ -45,6 +45,32 @@ export const createAnnouncement = async (newAnnouncement: announcementObj) => {
   }
 };
 
+export const updateAnnouncement = async (
+  _id: string,
+  announcement: announcementObj
+) => {
+  const newAnnouncement = { _id, ...announcement };
+  console.log(newAnnouncement);
+  try {
+    const response = await fetch(
+      "http://localhost:8000/announcements/updateAnnouncement",
+      {
+        headers,
+        method: "PATCH",
+        body: JSON.stringify(newAnnouncement),
+      }
+    );
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+    const data = await response.json();
+    return data.announcements;
+  } catch (error) {
+    // @ts-expect-error aaa
+    return error.message;
+  }
+};
+
 export const deleteAnnouncement = async (announcementId: string) => {
   try {
     const response = await fetch(
@@ -60,6 +86,65 @@ export const deleteAnnouncement = async (announcementId: string) => {
 
     const data = await response.json();
     return data.announcements;
+  } catch (error) {
+    console.log(error);
+
+    // @ts-expect-error aaa
+    return error.message;
+  }
+};
+
+// Quizzes---------------------------------------------------------------------
+export const createQuiz = async (newQuiz: quizObj) => {
+  try {
+    const response = await fetch("http://localhost:8000/quizzes/createQuiz", {
+      headers,
+      method: "POST",
+      body: JSON.stringify(newQuiz),
+    });
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+    const data = await response.json();
+    return data.quizzes;
+  } catch (error) {
+    // @ts-expect-error aaa
+    return error.message;
+  }
+};
+
+export const updateQuiz = async (_id: string, quiz: quizObj) => {
+  const newQuiz = { _id, ...quiz };
+  // console.log(newQuiz);
+  try {
+    const response = await fetch("http://localhost:8000/quizzes/updateQuiz", {
+      headers,
+      method: "PATCH",
+      body: JSON.stringify(newQuiz),
+    });
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+    const data = await response.json();
+    return data.quizzes;
+  } catch (error) {
+    // @ts-expect-error aaa
+    return error.message;
+  }
+};
+
+export const deleteQuiz = async (quizId: string) => {
+  try {
+    const response = await fetch("http://localhost:8000/quizzes/deleteQuiz", {
+      headers,
+      method: "DELETE",
+      body: JSON.stringify({ quizId }),
+    });
+
+    if (!response.ok) throw new Error(`Error: ${response.status}`);
+
+    const data = await response.json();
+    return data.quizzes;
   } catch (error) {
     console.log(error);
 

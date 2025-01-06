@@ -9,7 +9,7 @@ const quizSchema = new Schema({
     title: String,
     course: String,
     topic: String,
-    dueDate: Date,
+    dueDate: String,
 }, { timestamps: true });
 const Quiz = mongoose_1.default.model("quiz", quizSchema);
 exports.default = Quiz;

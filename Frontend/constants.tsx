@@ -11,7 +11,7 @@ export const NAVDATA = [
   {
     text: "Dashboard",
     icon: <Home />,
-    href: "/",
+    href: "/dashboard",
   },
   {
     text: "Schedule",

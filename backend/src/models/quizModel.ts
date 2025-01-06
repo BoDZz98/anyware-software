@@ -6,7 +6,7 @@ const quizSchema = new Schema(
     title: String,
     course: String,
     topic: String,
-    dueDate: Date,
+    dueDate: String,
   },
   { timestamps: true }
 );
@@ -20,5 +20,5 @@ export type quizObj = {
   title: string;
   course: string;
   topic: string;
-  dueDate: Date;
+  dueDate: string;
 };

@@ -16,13 +16,13 @@ exports.deleteQuiz = exports.updateQuiz = exports.getQuizzes = exports.createQui
 const quizModel_1 = __importDefault(require("../models/quizModel"));
 const createQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newQuiz = req.body;
-    console.log(newQuiz);
     try {
-        const createdQuiz = yield quizModel_1.default.create(newQuiz);
-        return res.status(201).json({ message: "Quiz created", createdQuiz });
+        yield quizModel_1.default.create(newQuiz);
+        const quizzes = yield quizModel_1.default.find();
+        return res.status(201).json({ message: "Quiz created", quizzes });
     }
     catch (error) {
-        console.log("error in Quiz controller, createReview");
+        console.log("error in Quiz controller, createQuiz");
         return res.status(500).json({ message: "Error creating Quiz" });
     }
 });
@@ -40,10 +40,11 @@ const getQuizzes = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.getQuizzes = getQuizzes;
 const updateQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { quizId, newQuiz } = (yield req.body);
+    const newQuiz = req.body;
     try {
-        yield quizModel_1.default.findByIdAndUpdate(quizId, newQuiz);
-        return res.status(201).json({ message: "Quiz updated" });
+        yield quizModel_1.default.findByIdAndUpdate(newQuiz._id, newQuiz);
+        const quizzes = yield quizModel_1.default.find();
+        return res.status(201).json({ message: "Quiz updated", quizzes });
     }
     catch (error) {
         console.log("error in Quiz controller, updateQuiz");
@@ -52,11 +53,11 @@ const updateQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.updateQuiz = updateQuiz;
 const deleteQuiz = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const quizId = yield req.body;
-    // console.log(reviewId, email);
+    const { quizId } = req.body;
     try {
         yield quizModel_1.default.findByIdAndDelete(quizId);
-        return res.status(201).json({ message: "Quiz deleted" });
+        const quizzes = yield quizModel_1.default.find();
+        return res.status(201).json({ message: "Quiz deleted", quizzes });
     }
     catch (error) {
         console.log("error in Quiz controller, deleteQuiz");

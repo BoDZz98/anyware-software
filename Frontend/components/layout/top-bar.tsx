@@ -10,7 +10,7 @@ import {
   Stack,
   styled,
 } from "@mui/material";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 

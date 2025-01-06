@@ -6,6 +6,7 @@ import {
   School,
   TrendingUpOutlined,
 } from "@mui/icons-material";
+import React from "react";
 
 export const NAVDATA = [
   {

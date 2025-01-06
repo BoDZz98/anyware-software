@@ -7,6 +7,7 @@ import TopBar from "@/components/layout/top-bar";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import Link from "next/link";
+import React from "react";
 
 // const metadata: Metadata = {
 //   title: "Anyware software",

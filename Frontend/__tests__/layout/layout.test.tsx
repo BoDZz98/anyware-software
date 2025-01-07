@@ -2,7 +2,7 @@ import RootLayout from "@/app/layout";
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import { vitest } from "vitest";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 describe("testing layout", () => {
   const pushMock = vitest.fn();
@@ -33,6 +33,11 @@ describe("testing layout", () => {
     );
 
     const dashboardLink = screen.getByRole("link", { name: /dashboard/i });
+    const announcmentsLink = screen.getByRole("link", {
+      name: /Announcement/i,
+    });
+
     expect(dashboardLink).toHaveAttribute("href", "/dashboard");
+    expect(announcmentsLink).toHaveAttribute("href", "/announcments");
   });
 });

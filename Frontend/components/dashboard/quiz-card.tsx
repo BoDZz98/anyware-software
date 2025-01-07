@@ -22,7 +22,11 @@ const QuizCard = ({ quiz, updatable }: QuizCardProps) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }} className="shadow-none">
+    <Card
+      sx={{ maxWidth: 345 }}
+      className="shadow-none"
+      data-testid="quizzesCard"
+    >
       <CardContent>
         <Typography
           variant="subtitle1"

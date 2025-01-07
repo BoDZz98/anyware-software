@@ -14,7 +14,7 @@ type AnnouncementsCardprops = {
 
 const AnnouncementsCard = ({ announcment }: AnnouncementsCardprops) => {
   return (
-    <ListItem className="">
+    <ListItem data-testid="announcementsCard">
       <ListItemAvatar>
         <Avatar />
       </ListItemAvatar>

@@ -58,6 +58,7 @@ const QuizDialog = (props: QuizDialogProps) => {
     <Dialog
       open={open}
       onClose={handleClose}
+      data-testid='quiz-dialog'
       PaperProps={{
         component: "form",
         onSubmit: submitHandler,

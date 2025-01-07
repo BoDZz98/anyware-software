@@ -2,7 +2,7 @@
 import { RootState } from "@/store";
 import { authAction } from "@/store/auth-slice";
 import { Button, Stack } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import React from 'react';
 

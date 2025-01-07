@@ -64,6 +64,7 @@ const Dashboard = () => {
               announcments
                 .map((announcment: announcementObj) => (
                   <AnnouncementsCard
+                    // data-testid="announcements-card"
                     key={announcment._id}
                     announcment={announcment}
                   />

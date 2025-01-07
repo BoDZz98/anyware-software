@@ -1,10 +1,29 @@
 import { beforeAll, vi } from "vitest";
 import "@testing-library/jest-dom";
 
-// Establish API mocking, or any mock in general before all tests
+export const mockState = {
+  data: {
+    quizzes: [
+      {
+        _id: "1",
+        title: "Quiz 1",
+        course: "Math",
+        topic: "Algebra",
+        dueDate: "20/1/2025",
+      },
+    ],
+    announcments: [
+      { _id: "1", title: "string", subTitle: "string", topic: "string" },
+    ],
+  },
+  auth: {
+    isLoggedIn: false,
+  },
+};
+
 beforeAll(() => {
-  vi.mock("next/router", () => {
-    const actual = vi.importActual("next/router");
+  vi.mock("next/navigation", () => {
+    const actual = vi.importActual("next/navigation");
     return {
       ...actual,
       useRouter: vi.fn(() => ({
@@ -15,6 +34,17 @@ beforeAll(() => {
         get: vi.fn(),
       })),
       usePathname: vi.fn(),
+    };
+  });
+
+  // Mock `useSelector` to return the default mock state
+  // @ts-expect-error asd
+  vi.mock(import("react-redux"), async (importOriginal) => {
+    const actual = await importOriginal();
+    return {
+      ...actual,
+      useSelector: vi.fn(),
+      useDispatch: () => vi.fn(),
     };
   });
 });

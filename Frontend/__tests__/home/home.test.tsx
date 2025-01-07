@@ -5,14 +5,12 @@ import React, { ReactNode } from "react";
 import authSlice from "@/store/auth-slice";
 import { Provider } from "react-redux";
 import { vitest } from "vitest";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import userEvent from "@testing-library/user-event";
 
 describe("testing homePage", () => {
   const store = configureStore({
-    reducer: {
-      auth: authSlice.reducer, // Replace with your actual slice reducer
-    },
+    reducer: { auth: authSlice.reducer },
   });
   const customRender = (ui: ReactNode) => {
     return render(<Provider store={store}>{ui}</Provider>);

@@ -59,6 +59,7 @@ const AnnouncementDialog = (props: AnnouncementDialogProps) => {
     <Dialog
       open={open}
       onClose={handleClose}
+      data-testid='announcement-dialog'
       PaperProps={{
         component: "form",
         onSubmit: submitHandler,
